@@ -44,3 +44,9 @@ scrape_configs:
   - regex:
       source: path
       expression: '/gitlab/(?P<group>[^/]+)/(?P<repo>[^/]+)\.git'
+  - labels:
+      group:
+      repo:
+  - match:
+      selector: '{repo=""}'
+      action: drop
