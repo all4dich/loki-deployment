@@ -24,6 +24,16 @@ scrape_configs:
       job: gitlab_access
       __path__: /tmp/nginx_gitlab/gitlab_access.log
   pipeline_stages:
+  - match:
+      selector: '{job="gitlab_access"}'
+      stages:
+        - drop:
+            expression: '/lfs/'
+  - match:
+      selector: '{job="gitlab_access"}'
+      stages:
+        - drop:
+            expression: '/gitlab-lfs/'
   - regex:
       expression: '^(?P<ip>\S+) - (?P<user>\S+) \[(?P<time>[^\]]+)\] "(?P<method>\S+) (?P<path>\S+) (?P<protocol>\S+)" (?P<status>\d+) (?P<size>\d+) "(?P<referrer>[^"]*)" "(?P<user_agent>[^"]*)" -'
   - labels:
@@ -49,4 +59,10 @@ scrape_configs:
       repo:
   - match:
       selector: '{repo=""}'
+      action: drop
+  - match:
+      selector: '{user=~"^\\s*$"}'
+      action: drop
+  - match:
+      selector: '{user="-"}'
       action: drop

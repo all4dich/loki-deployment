@@ -49,5 +49,7 @@ services:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
+    volumes:
+      - ${HOME}/data/grafana:/var/lib/grafana
     networks:
       - loki
